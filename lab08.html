@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>COSC346 Week 8 - Fraction Calculator</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   	<link rel="stylesheet" type="text/css" href="../phplabbook/labbookswift.css">
+	<link rel="stylesheet" type="text/css" href="../cosc346labstyle.css">
+	<script src="../jquery-1.11.1.min.js"></script>
+	<script src="../toc.min.js"></script>
+	<script src="../cosc346labscript.js"></script>
+</head>
+<body>
+
+	<!-- Banner -->
+	<div class="banner">
+		<a href="../../labs.php">COSC346 - Object Oriented Programming and User Interfaces</a>
+	</div>
+		
+	<!-- Lab title -->		
+	<h1>Week 8 - Fraction Calculator</h1>
+	
+	<!-- Table of Contents -->
+	<div id="toc"></div>
+		
+		
+	<h2>Goals</h2>
+	<div class="block">
+		<ul class="toplist">
+			<li>To familiarise yourself with the basics of Xcode's Interface Builder</li>
+			<li>To create your first application</li>
+		</ul>
+	</div>
+		
+		
+	<h2>Preparation</h2>
+	<div class="block">
+	<ul class="toplist">
+		<li>Complete <a href="../lab05/lab05.html">Lab 5</a> - you'll be using the Fraction and Parser classes from that lab
+	</ul>
+	</div>
+
+	<h2>One Button</h2>
+	<div class="block">
+	
+	 <h3>Application delegate</h3>
+		
+		<p>
+		First, start up Xcode and create a new project. Instead of the usual <em>Command Line Tool</em> you will now be creating a <em>Cocoa Application</em>.  In your first attempt you will not create the entire calculator. Initially, your application will be a one button calculator. Name the application "FractionCalculator" (by convention, Cocoa applications start with a capital letter, while command line applications start with a lowercase letter).  Make sure <em>Language</em> is set to "Swift", and that other boxes are unchecked.
+		</p>
+	
+		<p>
+		Once the project is created, in the Project navigator, you should see file called "AppDelegate.swift". This file has been created for you by Xcode and will contain your application delegate class.  An application delegate is a class that conforms to the <em><span class="swiftcode"><span class="swiftclass">NSApplicationDelegate</span></span></em> protocol, and it's the means of plugging in your code into Cocoa's application framework.  The framework provides a generic, fully functional, application that, among other things, can display windows and react to user's input.  You customise the behaviour of your application by creating a class that is application's delegate.  The framework will invoke delegate's methods at various stages/events of the application's execution.  Xcode has decided that your delegate will be a class called <em><span class="swiftcode"><span class="swiftdefined">AppDelegate</span></span></em> and it will be at least populated with two empty methods.  As the names of these methods suggest, one is invoked on application start, the other just before the application terminates.  You don't need to create an instance of <em><span class="swiftcode"><span class="swiftdefined">AppDelegate</span></span></em> delegate, this is done automatically when applications tarts.  All you need to do is to implement the <em><span class="swiftcode"><span class="swiftdefined">AppDelegate</span></span></em> class to implement your program.
+		</p>
+
+		<img class="block" src="images/screen01.png" style="max-width:1256px;max-height:861px" title="Application Delegate">
+			
+	<h3>Application window</h3>
+			
+		<p>
+		Note <em><span class="swiftcode"><span class="swiftdefined">AppDelegate</span></span></em>'s stored property named "<em><span class="swiftcode">window</span></em>", whose declaration is preceded by type <span class="codekeyword">@IBOutlet</span> keyword.  It's a reference to <em><span class="swiftcode"><span class="swiftclass">NSWindow</span></span></em> window object, which is the main window used by your application.  To see that window, in the Project navigator select file "MainMenu.xib".  XIB files store information about all the GUI elements in your application.  You don't edit this file directly.  Instead you specify the graphical layout of your application through the Interface Builder.  Xcode saves information about the elements in the window, their properties, position, etc. into the XIB file.  By default, an application is configured with a single, empty window.  To see it in the Interface Builder, select the window view icon, <img class="intext" src="images/icon01.png" style="top: -5px; width:39x;height:39px">, on the bar on the right-hand side of the Project navigator.
+		</p>
+
+		<img class="block" src="images/screen02.png" style="max-width:1256px;max-height:861px" title="Main window">
+
+		<p>
+		The window is already connected to your <em><span class="swiftcode"><span class="swiftdefined">AppDelegate</span></span></em> through that <span class="codekeyword">@IBOutlet</span> construct (outlets will be explained in more detail in the next section).  Build and run the application (the same way your ran your command-line programs - by clicking on the play button in Xcode toolbar).  At this point, it will be just an empty window, but the application is fully functional.  For instance, you can quit the application.  From menu select <em>FractionCalculator -> Quit FractionCalculator</em> - the application will close. 
+		</p>
+
+		<img class="block" src="images/screen03.png" style="max-width:480px;max-height:382px" title="Fraction Calculator default application">
+
+	<h3>GUI elements</h3>
+
+		<p>
+		Time to add some GUI elements to the window.  Back in Xcode, make sure you can see the main window in the Interface Builder.  On the right-hand side of the Interface Builder, in the lower part of the Utilities area, there's a tool bar with four icons.  Select the <em>Object library</em> icon <img class="intext" src="images/icon02.png" style="top: 0px;width:20x;height:20px"> (follow the arrows in the diagram below if you have trouble finding it).  Object library will display a list of all available GUI elements.  At the bottom there is a search box, where you can <em>Search for object...</em>.  Type "label" into the search, and the list of objects should get filtered.  Select the "Label" object and drag it onto the window in the Interface Builder.  Resize the label in your window so that its position and size corresponds more or less to the diagram below.
+		</p>
+		
+		<p>
+		There's another toolbar on the upper part of the Utilities area.  Select the <em>Attributes Inspector</em> icon there, <img class="intext" src="images/icon03.png" style="top: 0px;width:20x;height:20px">, to view the attributes of the object currently selected in the Interface Builder.  Make sure that the label you just placed in the window is selected.  Change the "Alignment" property of the label to right-align, check the "Draws Background" in the "Display", set "Text Color" and "Background" to whatever you like (I chose white and blue respectively), and click on the <img class="intext" src="images/icon04.png" style="top: 0px;width:18x;height:18px"> icon in the "Font" box to increase the label's font size.
+		</p> 
+		
+
+		<img class="block" src="images/screen04.png" style="max-width:1256px;max-height:861px" title="Label object">
+
+		<p>
+		Next, you will add a button to your window.  In the <em>Object library</em> part of the Utility area search for "square button".  Drag the "Square Button" element onto your window - you can resize it as shown in the diagram below (despite its name, this element doesn't need to preserve proportions of a square).  With the button element selected in the Interface Builder, you can change it's properties in the <em>Attributes Inspector</em> - set "Title" to "0" and increase the "Font" size.  
+		</p>
+
+		<img class="block" src="images/screen05.png" style="max-width:1256px;max-height:861px" title="Square button object">
+		
+		<p>
+		You will also need to change an attribute of the main window itself.  Selecting main window in the Interface Builder can be tricky.  Entire area of the window is covered by the "View" element, which often gets selected when you click on the window.  The easiest way to select what you want is to get Xcode to show you the hierarchy of all the GUI elements in the window.  In the bottom left corner of the Interface Builder there is a <em>Show/hide document outline</em> icon <img class="intext" src="images/icon05.png" style="top: 0px;width:18x;height:18px"> - toggle it to see the hierarchy of your GUI elements. At the moment, that hierarchy should be as the one shown in the diagram below.  Select FractionCalculator window (no the view below).  Now, in the <em>Attributes Inspector</em> you can see various properties of the window. Make sure to uncheck the "Resize" attribute - the window will be of fixed size.
+		<p>
+
+		<img class="block" src="images/screen06.png" style="max-width:1256px;max-height:861px" title="Windows object">
+	
+		<p>
+		Run your application again.  It should now be a window with a label and a button.  You can click the button but nothing will happen, as you haven't specified its behaviour yet.
+		</p>
+
+		<img class="block" src="images/screen07.png" style="max-width:480px;max-height:382px" title="Fraction Calculator with a label and a button">
+
+	 <h3>Connecting the GUI elements</h3>
+	
+		<p>
+		In this part of the exercise you will provide the code that determines how your text field and button will behave when the application runs.  In this application, the button will be the “0” button on the calculator and the text field will show a “0” when user hits the button.  The easiest way to do this is to have the Interface Builder and the source code of <em><span class="swiftcode"><span class="swiftdefined">AppDelegate</span></span></em> displayed side by side.  Click on the "Show the Assistant Editor" icon <img class="intext" src="images/icon06.png" style="top: 0px;width:22x;height:22px">.  A new window will appear, and it should show the source code of "AppDelegate.swift".  Assistant editor automatically decides what to display - when MainMenu.xib is selected in the Project navigator, the assistant will usually display the source code of the application's delegate.  You can always force it to display something else (by changing it's automatic display setting).  However, at the moment it should be showing exactly what you need to see.
+		</p>
+		
+		<img class="block" src="images/screen08.png" style="max-width:1584px;max-height:807px" title="Assistant editor">
+
+		<p>
+		Right now, the <em><span class="swiftcode"><span class="swiftdefined">AppDelegate</span></span></em> class has a single stored property, "<em><span class="swiftcode">window</span></em>", which is a weak reference to <span class="codeclass">NSWindow</span> object.  Its declaration is preceded by <span class="codekeyword">@IBOutlet</span> keyword.  In Cocoa, outlets are references to GUI elements, which are not instantiated by the developer (you), but by the XIB file.  The XIB file contains all the information about all the GUI objects.  You are customising the XIB file whenever you're changing things in the Interface Builder.  For instance, when you added the label and button object to the window, XIB file recorded the fact that these objects need to be instantiated on startup.  The <span class="codekeyword">@IBOutlet</span> keyword is an Interface Builder keyword.  It's ignored by the compiler, but it does let Interface Builder know that the variable references an object from the XIB file.  You can tell that the "<em><span class="swiftcode">window</span></em>" outlet is connected, because there's a filled-in circle (connection) to the left of the property, on the margin.  An unconnected outlet would be marked as a hollow circle.  By default, application delegate is setup with a connected outlet to the main window.  
+		</p>
+		
+		<div class="note">
+			<img src="images/note.png" style="width:64px;max:64px">
+			<h4>Implicitly unwrapped optionals</h4>
+		
+			<p>
+			All weak references must be optionals, because in theory they may reference nothing.  However, sometimes the program logic assures that these references are never actually nil.  Weak reference outlets, that are connected to GUI elements, get initialised at application startup.  This happens before application delegate gets to run, and so, from delegate's point of view,  these outlets will always be initialised.  It would be a lot of hassle to keep unwrapping the reference every time it needs to be used.  For this reason Swift provides <a href="https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/TheBasics.html#//apple_ref/doc/uid/TP40014097-CH5-ID334">implicitly unwrapped optionals</a>, declared by following the reference type with the "!" operator.  That means that the corresponding variable already references the result of the unwrapping of the optional, and so there is no need to unwrap it.  	
+		
+			</p>
+		</div>
+		
+		<p>
+		In order to modify the contest of the label in your window, you will need an outlet that references it.  The easiest way to create a connected outlet to your GUI element is to Control-click (that is click while pressing the Control key) that element in the Interface Builder and drag the mouse to the Assistant Editor into the source code where the reference is to be created (as shown in the diagram below).
+		</p>
+		
+		<img class="block" src="images/screen09.png" style="max-width:1584px;max-height:807px" title="Creating an outlet">
+
+		<p>
+		When an "Insert Outlet or Action" message appears, let go of the mouse.  You should see a dialog box.  Make sure the "Connection" says "Outlet".  The "Name" specifies the name of your new property - set it to "display".  Other options should be left as they are: "Type" should be set to "NSTextField" and "Storage" should be set to "weak".  Click the <em>Connect</em> button.  A new connected outlet reference should appear in your class.  You don't need to instantiate it, because it's connected to a GUI element - instantiation will happen on application startup.
+		</p>
+
+		<p>
+		To define what happens on click of the button, you will need to create an action method.  Whereas outlets are references, actions are methods that are associated with GUI elements.  Again, the easiest way to create such a method is to Control-click on the corresponding GUI element (the button) and to drag the mouse over to where the method is to be declared (as shown in the diagram below).
+		</p>
+
+		<img class="block" src="images/screen10.png" style="max-width:1584px;max-height:807px" title="Creating an action">
+
+		<p>
+		Again, when "Insert Outlet or Action" dialog appears, let go of the mouse.  This time, change the "Connection" to "Action".  The "Name" is the name of your method: call it "clickDigit".  Change "Type" to "NSButton" and click <em>Connect</em>.  A new method should be created in <em><span class="swiftcode"><span class="swiftdefined">AppDelegate</span></span></em> as shown in the diagram below.
+		</p> 
+
+		<img class="block" src="images/screen11.png" style="max-width:1584px;max-height:807px" title="Code for onClick action">
+
+		<p>
+		The new method is preceded by the <span class="codekeyword">@IBAction</span> keyword.  This is again a keyword used by the Interface Builder (ignored by the compiler) that signifies that the method is a callback associated with a GUI object.  Note the filled circle next to the newly created method.   Once again, you don't have to explicitly setup the callback - it's all somewhere in the XIB file.  From now on, whenever the button is clicked, the "clickDigit" method of <em><span class="swiftcode"><span class="swiftdefined">AppDelegate</span></span></em> is going to be invoked.   
+		</p>  
+		
+		<p>
+		Now, in the <em><span class="swiftcode"><span class="swiftdefined">AppDelegate</span></span></em>, you have a reference to the label object and a method that will be invoked when the button is clicked.  All that remains is to specify what happens to the label when "clickDigit" is invoked.  An <em><span class="swiftcode"><span class="swiftclass">NSTextField</span></span></em> object has a property "stringValue", which specifies the text displayed in its box.  Update the contents of the "clickDigit" method, so that "display" object's "stringValue" is set to "0".  Your <em><span class="swiftcode"><span class="swiftdefined">AppDelegate</span></span></em> should contain the following code: 
+		</p>
+		
+		<div class="codeblock">
+<div class="codeblocktitle"><a href="code/01/AppDelegate.swift">AppDelegate.swift</a></div>
+<pre class="linenumbers unselectable" style="float: left;">01:
+02:
+03:
+04:
+05:
+06:
+07:
+08:
+09:
+10:
+11:
+12:
+13:
+14:
+15:
+16:
+17:
+18:
+19:
+20:
+21:
+22:
+23:
+</pre><pre class="code">
+<span class="swiftcode"><span class="swiftkeyword">import</span> Cocoa</span>
+<span class="swiftcode"></span>
+<span class="swiftcode"><span class="swiftkeyword">@NSApplicationMain</span></span>
+<span class="swiftcode"><span class="swiftkeyword">class</span> <span class="swiftdefined">AppDelegate</span> : NSObject, <span class="swiftclass">NSApplicationDelegate</span> {</span>
+<span class="swiftcode"></span>
+<span class="swiftcode">    <span class="swiftkeyword">@IBOutlet</span> <span class="swiftkeyword">weak</span> <span class="swiftkeyword">var</span> window: <span class="swiftclass">NSWindow</span>!</span>
+<span class="swiftcode"></span>
+<span class="swiftcode">    <span class="swiftkeyword">@IBOutlet</span> <span class="swiftkeyword">weak</span> <span class="swiftkeyword">var</span> display: <span class="swiftclass">NSTextField</span>!</span>
+<span class="swiftcode"></span>
+<span class="swiftcode">    <span class="swiftkeyword">func</span> applicationDidFinishLaunching(aNotification: <span class="swiftclass">NSNotification</span>) {</span>
+<span class="swiftcode">        <span class="swiftcomment">// Insert code here to initialize your application</span></span>
+<span class="swiftcode">    }</span>
+<span class="swiftcode"></span>
+<span class="swiftcode">    <span class="swiftkeyword">func</span> applicationWillTerminate(aNotification: <span class="swiftclass">NSNotification</span>) {</span>
+<span class="swiftcode">        <span class="swiftcomment">// Insert code here to tear down your application</span></span>
+<span class="swiftcode">    }</span>
+<span class="swiftcode"></span>
+<span class="swiftcode">    <span class="swiftkeyword">@IBAction</span> <span class="swiftkeyword">func</span> clickDigit(sender: <span class="swiftclass">NSButton</span>) {</span>
+<span class="swiftcode">        display.stringValue = <span class="swiftstring">"0"</span></span>
+<span class="swiftcode">    }</span>
+<span class="swiftcode"></span>
+<span class="swiftcode">}</span>
+<span class="swiftcode"></span>
+</pre>
+</div>
+	
+
+		<p>
+		Run the application.  Now, when you click the button, the label should display "0".</p>
+		</p>
+
+		<img class="block" src="images/screen12.png" style="max-width:480px;max-height:382px" title="FractionCalculator application">
+	</div>
+
+	<h2>Fraction Calculator</h2>
+	<div class="block">
+
+		<p>
+		In this part of the exercise, you will implement the entire fraction calculator application.  	
+		</p>
+		
+	  <h3>Model-View-Controller</h3>
+	
+		<p>Grab "<a href="../lab05/code/02/Parser.swift">Parser.swift</a>" from Lab 5 along with your implementation of "Fraction.swift".  Add them to your FractionCalculator project.  These two classes will constitute the <em>Model</em> of the application.  This model is capable of interpreting a string expression as a set of mathematical operations, and returning a <span class="codekeyword">Fraction</span> result.  All that the <em>Controller</em>, <em><span class="swiftcode"><span class="swiftdefined">AppDelegate</span></span></em>, needs to do now, is to collect information from the <em>View</em> classes (the GUI elements), build the string describing the expression specified by the user, and pass it to the model for evaluation.
+		</p>
+	
+		<p>Create the buttons for digits 1-9.  The easiest way to do this is by copying (Control-C) and pasting (Control-V) the existing 0 button in the Interface Builder.  The pasted buttons maintain the connection to the copied button's action.  You can easily create 9 new buttons.  Change their titles to different digits.</p>
+		
+		<img class="block" src="images/screen13.png" style="max-width:1584px;max-height:807px" title="">
+
+		<p>To verify that all the buttons are connected to the "clickDigit" action, mouseover the connect circle next to the method - connected buttons should be indicated in the Interface Builder as shown in the figure below.</p>
+
+		<img class="block" src="images/screen14.png" style="max-width:1584px;max-height:807px" title="">
+
+		<p>Given that "clickDigit" is going to be invoked for every digit button, you need some extra information coming in, which specifies which button was clicked.  Buttons have a "Tag" property.  In the "Attributes Inspector" set the "Tag" attribute of each of the digit buttons to its digit value.</p> 
+
+		<img class="block" src="images/screen15.png" style="max-width:1584px;max-height:807px" title="">
+
+		<p>Change the contents of "clickDigit" to read the "tag" property of the "sender" and add it as a string to "display"'s "stringValue".  The "sender" argument references the button object that was clicked.   
+		</p>
+		
+		<div class="codeblock">
+<div class="codeblocktitle"><a href="code/02/AppDelegate.swift">AppDelegate.swift</a></div>
+<pre class="linenumbers unselectable" style="float: left;"><span class="codeold">01:
+</span><span class="codeold">02:
+</span><span class="codeold">03:
+</span><span class="codeold">04:
+</span><span class="codeold">05:
+</span><span class="codeold">06:
+</span><span class="codeold">07:
+</span><span class="codeold">08:
+</span><span class="codeold">09:
+</span><span class="codeold">10:
+</span><span class="codeold">11:
+</span><span class="codeold">12:
+</span><span class="codeold">13:
+</span><span class="codeold">14:
+</span><span class="codeold">15:
+</span><span class="codeold">16:
+</span><span class="codeold">17:
+</span><span class="codeold">18:
+</span>19:
+20:
+<span class="codeold">21:
+</span><span class="codeold">22:
+</span><span class="codeold">23:
+</span></pre><pre class="code">
+<span class="codeold"><span class="swiftcode"><span class="swiftkeyword">import</span> Cocoa</span></span>
+<span class="codeold"><span class="swiftcode"></span></span>
+<span class="codeold"><span class="swiftcode"><span class="swiftkeyword">@NSApplicationMain</span></span></span>
+<span class="codeold"><span class="swiftcode"><span class="swiftkeyword">class</span> <span class="swiftdefined">AppDelegate</span> : NSObject, <span class="swiftclass">NSApplicationDelegate</span> {</span></span>
+<span class="codeold"><span class="swiftcode"></span></span>
+<span class="codeold"><span class="swiftcode">    <span class="swiftkeyword">@IBOutlet</span> <span class="swiftkeyword">weak</span> <span class="swiftkeyword">var</span> window: <span class="swiftclass">NSWindow</span>!</span></span>
+<span class="codeold"><span class="swiftcode"></span></span>
+<span class="codeold"><span class="swiftcode">    <span class="swiftkeyword">@IBOutlet</span> <span class="swiftkeyword">weak</span> <span class="swiftkeyword">var</span> display: <span class="swiftclass">NSTextField</span>!</span></span>
+<span class="codeold"><span class="swiftcode"></span></span>
+<span class="codeold"><span class="swiftcode">    <span class="swiftkeyword">func</span> applicationDidFinishLaunching(aNotification: <span class="swiftclass">NSNotification</span>){</span></span>
+<span class="codeold"><span class="swiftcode">        <span class="swiftcomment">// Insert code here to initialize your application</span></span></span>
+<span class="codeold"><span class="swiftcode">    }</span></span>
+<span class="codeold"><span class="swiftcode"></span></span>
+<span class="codeold"><span class="swiftcode">    <span class="swiftkeyword">func</span> applicationWillTerminate(aNotification: <span class="swiftclass">NSNotification</span>) {</span></span>
+<span class="codeold"><span class="swiftcode">        <span class="swiftcomment">// Insert code here to tear down your application</span></span></span>
+<span class="codeold"><span class="swiftcode">    }</span></span>
+<span class="codeold"><span class="swiftcode"></span></span>
+<span class="codeold"><span class="swiftcode">    <span class="swiftkeyword">@IBAction</span> <span class="swiftkeyword">func</span> clickDigit(sender: <span class="swiftclass">NSButton</span>) {</span></span>
+<span class="swiftcode">        <span class="swiftkeyword">let</span> digit: <span class="swiftclass">Int</span> = sender.tag</span>
+<span class="swiftcode">        display.stringValue += <span class="swiftstring">"</span></span><span class="codeswift">\<span class="swiftstring">(</span>digit<span class="swiftstring">)</span></span><span class="swiftcode"><span class="swiftstring">"</span></span>
+<span class="codeold"><span class="swiftcode">    }</span></span>
+<span class="codeold"><span class="swiftcode"></span></span>
+<span class="codeold"><span class="swiftcode">}</span></span>
+</pre>
+</div>
+	
+
+		<p>
+		Run the application and test the buttons. 
+		</p>
+
+		<img class="block" src="images/screen16.png" style="max-width:285px;max-height:385px" title="">
+
+	  <h3>More buttons</h3>
+	
+		<p>
+		Add more buttons to your calculator.  This time don't copy and paste from the digits - you don't want the new buttons to be connected to the "clickDigit" method.  If you drag a new square button from the object library, you can then copy and paste that button to create six new ones.  Change their titles to "C" (for clear), "+", "-", "x", "/" and "=".  A possible layout is shown in the diagram below. 
+		</p>
+	
+		<img class="block" src="images/screen18.png" style="max-width:1584px;max-height:807px" title="">
+
+		<p>
+		This time you will create the action methods first, and then connect them to appropriate buttons.  Add the following code to <em><span class="swiftcode"><span class="swiftdefined">AppDelegate</span></span></em>.
+		</p>
+
+		<div class="codeblock">
+<div class="codeblocktitle"><a href="code/03/AppDelegate.swift">AppDelegate.swift</a></div>
+<pre class="linenumbers unselectable" style="float: left;"><span class="codeold">01:
+</span><span class="codeold">02:
+</span><span class="codeold">03:
+</span><span class="codeold">04:
+</span><span class="codeold">05:
+</span><span class="codeold">06:
+</span><span class="codeold">07:
+</span><span class="codeold">08:
+</span><span class="codeold">09:
+</span><span class="codeold">10:
+</span><span class="codeold">11:
+</span><span class="codeold">12:
+</span><span class="codeold">13:
+</span><span class="codeold">14:
+</span><span class="codeold">15:
+</span><span class="codeold">16:
+</span><span class="codeold">17:
+</span><span class="codeold">18:
+</span><span class="codeold">19:
+</span><span class="codeold">20:
+</span><span class="codeold">21:
+</span><span class="codeold">22:
+</span>23:
+24:
+25:
+26:
+27:
+28:
+29:
+30:
+31:
+32:
+33:
+34:
+35:
+36:
+37:
+38:
+39:
+40:
+41:
+<span class="codeold">42:
+</span><span class="codeold">43:
+</span><span class="codeold">44:
+</span></pre><pre class="code">
+<span class="codeold"><span class="swiftcode"><span class="swiftkeyword">import</span> Cocoa</span></span>
+<span class="codeold"><span class="swiftcode"></span></span>
+<span class="codeold"><span class="swiftcode"><span class="swiftkeyword">@NSApplicationMain</span></span></span>
+<span class="codeold"><span class="swiftcode"><span class="swiftkeyword">class</span> <span class="swiftdefined">AppDelegate</span> : NSObject, <span class="swiftclass">NSApplicationDelegate</span> {</span></span>
+<span class="codeold"><span class="swiftcode"></span></span>
+<span class="codeold"><span class="swiftcode">    <span class="swiftkeyword">@IBOutlet</span> <span class="swiftkeyword">weak</span> <span class="swiftkeyword">var</span> window: <span class="swiftclass">NSWindow</span>!</span></span>
+<span class="codeold"><span class="swiftcode"></span></span>
+<span class="codeold"><span class="swiftcode">    <span class="swiftkeyword">@IBOutlet</span> <span class="swiftkeyword">weak</span> <span class="swiftkeyword">var</span> display: <span class="swiftclass">NSTextField</span>!</span></span>
+<span class="codeold"><span class="swiftcode"></span></span>
+<span class="codeold"><span class="swiftcode">    <span class="swiftkeyword">func</span> applicationDidFinishLaunching(aNotification: <span class="swiftclass">NSNotification</span>){</span></span>
+<span class="codeold"><span class="swiftcode">        <span class="swiftcomment">// Insert code here to initialize your application</span></span></span>
+<span class="codeold"><span class="swiftcode">    }</span></span>
+<span class="codeold"><span class="swiftcode"></span></span>
+<span class="codeold"><span class="swiftcode">    <span class="swiftkeyword">func</span> applicationWillTerminate(aNotification: <span class="swiftclass">NSNotification</span>) {</span></span>
+<span class="codeold"><span class="swiftcode">        <span class="swiftcomment">// Insert code here to tear down your application</span></span></span>
+<span class="codeold"><span class="swiftcode">    }</span></span>
+<span class="codeold"><span class="swiftcode"></span></span>
+<span class="codeold"><span class="swiftcode">    <span class="swiftkeyword">@IBAction</span> <span class="swiftkeyword">func</span> clickDigit(sender: <span class="swiftclass">NSButton</span>) {</span></span>
+<span class="codeold"><span class="swiftcode">        <span class="swiftkeyword">let</span> digit: <span class="swiftclass">Int</span> = sender.tag</span></span>
+<span class="codeold"><span class="swiftcode">        display.stringValue += <span class="swiftstring">"</span></span><span class="codeswift">\<span class="swiftstring">(</span>digit<span class="swiftstring">)</span></span><span class="swiftcode"><span class="swiftstring">"</span></span></span>
+<span class="codeold"><span class="swiftcode">    }</span></span>
+<span class="codeold"><span class="swiftcode"></span></span>
+<span class="swiftcode">    <span class="swiftkeyword">@IBAction</span> <span class="swiftkeyword">func</span> clickAdd(sender: <span class="swiftclass">NSButton</span>) {</span>
+<span class="swiftcode">        display.stringValue += <span class="swiftstring">"+"</span></span>
+<span class="swiftcode">    }</span>
+<span class="swiftcode"></span>
+<span class="swiftcode">    <span class="swiftkeyword">@IBAction</span> <span class="swiftkeyword">func</span> clickSubtract(sender: <span class="swiftclass">NSButton</span>) {</span>
+<span class="swiftcode">        display.stringValue += <span class="swiftstring">"-"</span></span>
+<span class="swiftcode">    }</span>
+<span class="swiftcode">    </span>
+<span class="swiftcode">    <span class="swiftkeyword">@IBAction</span> <span class="swiftkeyword">func</span> clickMultiply(sender: <span class="swiftclass">NSButton</span>) {</span>
+<span class="swiftcode">        display.stringValue += <span class="swiftstring">"*"</span></span>
+<span class="swiftcode">    }</span>
+<span class="swiftcode"></span>
+<span class="swiftcode">    <span class="swiftkeyword">@IBAction</span> <span class="swiftkeyword">func</span> clickDivide(sender: <span class="swiftclass">NSButton</span>) {</span>
+<span class="swiftcode">        display.stringValue += <span class="swiftstring">"/"</span></span>
+<span class="swiftcode">    }</span>
+<span class="swiftcode"></span>
+<span class="swiftcode">    <span class="swiftkeyword">@IBAction</span> <span class="swiftkeyword">func</span> clickClear(sender: <span class="swiftclass">NSButton</span>) {</span>
+<span class="swiftcode">        display.stringValue = <span class="swiftstring">""</span></span>
+<span class="swiftcode">    }</span>
+<span class="codeold"><span class="swiftcode"></span></span>
+<span class="codeold"><span class="swiftcode">    </span></span>
+<span class="codeold"><span class="swiftcode">}</span></span>
+</pre>
+</div>
+	
+
+		<p>
+		The new methods define actions for five buttons.  The methods for addition, subtraction, multiplication and division just append appropriate mathematical operation character to "display"'s "stringValue".  The clear method clears that "stringValue".  The <span class="codekeyword">@IBAction</span> keyword prompts Xcode to create hollow circles on the left-hand margin next to each method.  This means that actions are not connected to GUI elements.  To connect an action, click on its connection circle and drag the mouse to a button. 
+		</p> 
+
+		<img class="block" src="images/screen19.png" style="max-width:1584px;max-height:807px" title="">
+
+		<p>
+		Connect all five actions to appropriate buttons.  Once you're done, all the connection circles should be filled-in. 
+		</p>
+
+		<img class="block" src="images/screen20.png" style="max-width:1584px;max-height:807px" title="">
+
+		<p>
+		Run the application and verify that the connected buttons work.
+		</p>
+
+		<img class="block" src="images/screen21.png" style="max-width:285px;max-height:385px" title="">
+
+		<p>
+		The last button to connect is the "=" button, which will trigger evaluation of the expression from label's "stringValue".  Add the following action method to <em><span class="swiftcode"><span class="swiftdefined">AppDelegate</span></span></em>.
+		</p>
+
+		<div class="codeblock">
+<div class="codeblocktitle"><a href="code/04/AppDelegate.swift">AppDelegate.swift</a></div>
+<pre class="linenumbers unselectable" style="float: left;"><span class="codeold">01:
+</span><span class="codeold">02:
+</span><span class="codeold">03:
+</span><span class="codeold">04:
+</span><span class="codeold">05:
+</span><span class="codeold">06:
+</span><span class="codeold">07:
+</span><span class="codeold">08:
+</span><span class="codeold">09:
+</span><span class="codeold">10:
+</span><span class="codeold">11:
+</span><span class="codeold">12:
+</span><span class="codeold">13:
+</span><span class="codeold">14:
+</span><span class="codeold">15:
+</span><span class="codeold">16:
+</span><span class="codeold">17:
+</span><span class="codeold">18:
+</span><span class="codeold">19:
+</span><span class="codeold">20:
+</span><span class="codeold">21:
+</span><span class="codeold">22:
+</span><span class="codeold">23:
+</span><span class="codeold">24:
+</span><span class="codeold">25:
+</span><span class="codeold">26:
+</span><span class="codeold">27:
+</span><span class="codeold">28:
+</span><span class="codeold">29:
+</span><span class="codeold">30:
+</span><span class="codeold">31:
+</span><span class="codeold">32:
+</span><span class="codeold">33:
+</span><span class="codeold">34:
+</span><span class="codeold">35:
+</span><span class="codeold">36:
+</span><span class="codeold">37:
+</span><span class="codeold">38:
+</span><span class="codeold">39:
+</span><span class="codeold">40:
+</span><span class="codeold">41:
+</span><span class="codeold">42:
+</span>43:
+44:
+45:
+46:
+47:
+48:
+49:
+<span class="codeold">50:
+</span><span class="codeold">51:
+</span></pre><pre class="code">
+<span class="codeold"><span class="swiftcode"><span class="swiftkeyword">import</span> Cocoa</span></span>
+<span class="codeold"><span class="swiftcode"></span></span>
+<span class="codeold"><span class="swiftcode"><span class="swiftkeyword">@NSApplicationMain</span></span></span>
+<span class="codeold"><span class="swiftcode"><span class="swiftkeyword">class</span> <span class="swiftdefined">AppDelegate</span> : NSObject, <span class="swiftclass">NSApplicationDelegate</span> {</span></span>
+<span class="codeold"><span class="swiftcode"></span></span>
+<span class="codeold"><span class="swiftcode">    <span class="swiftkeyword">@IBOutlet</span> <span class="swiftkeyword">weak</span> <span class="swiftkeyword">var</span> window: <span class="swiftclass">NSWindow</span>!</span></span>
+<span class="codeold"><span class="swiftcode"></span></span>
+<span class="codeold"><span class="swiftcode">    <span class="swiftkeyword">@IBOutlet</span> <span class="swiftkeyword">weak</span> <span class="swiftkeyword">var</span> display: <span class="swiftclass">NSTextField</span>!</span></span>
+<span class="codeold"><span class="swiftcode"></span></span>
+<span class="codeold"><span class="swiftcode">    <span class="swiftkeyword">func</span> applicationDidFinishLaunching(aNotification: <span class="swiftclass">NSNotification</span>){</span></span>
+<span class="codeold"><span class="swiftcode">        <span class="swiftcomment">// Insert code here to initialize your application</span></span></span>
+<span class="codeold"><span class="swiftcode">    }</span></span>
+<span class="codeold"><span class="swiftcode"></span></span>
+<span class="codeold"><span class="swiftcode">    <span class="swiftkeyword">func</span> applicationWillTerminate(aNotification: <span class="swiftclass">NSNotification</span>) {</span></span>
+<span class="codeold"><span class="swiftcode">        <span class="swiftcomment">// Insert code here to tear down your application</span></span></span>
+<span class="codeold"><span class="swiftcode">    }</span></span>
+<span class="codeold"><span class="swiftcode"></span></span>
+<span class="codeold"><span class="swiftcode">    <span class="swiftkeyword">@IBAction</span> <span class="swiftkeyword">func</span> clickDigit(sender: <span class="swiftclass">NSButton</span>) {</span></span>
+<span class="codeold"><span class="swiftcode">        <span class="swiftkeyword">let</span> digit: <span class="swiftclass">Int</span> = sender.tag</span></span>
+<span class="codeold"><span class="swiftcode">        display.stringValue += <span class="swiftstring">"</span></span><span class="codeswift">\<span class="swiftstring">(</span>digit<span class="swiftstring">)</span></span><span class="swiftcode"><span class="swiftstring">"</span></span></span>
+<span class="codeold"><span class="swiftcode">    }</span></span>
+<span class="codeold"><span class="swiftcode"></span></span>
+<span class="codeold"><span class="swiftcode">    <span class="swiftkeyword">@IBAction</span> <span class="swiftkeyword">func</span> clickAdd(sender: <span class="swiftclass">NSButton</span>) {</span></span>
+<span class="codeold"><span class="swiftcode">        display.stringValue += <span class="swiftstring">"+"</span></span></span>
+<span class="codeold"><span class="swiftcode">    }</span></span>
+<span class="codeold"><span class="swiftcode"></span></span>
+<span class="codeold"><span class="swiftcode">    <span class="swiftkeyword">@IBAction</span> <span class="swiftkeyword">func</span> clickSubtract(sender: <span class="swiftclass">NSButton</span>) {</span></span>
+<span class="codeold"><span class="swiftcode">        display.stringValue += <span class="swiftstring">"-"</span></span></span>
+<span class="codeold"><span class="swiftcode">    }</span></span>
+<span class="codeold"><span class="swiftcode">    </span></span>
+<span class="codeold"><span class="swiftcode">    <span class="swiftkeyword">@IBAction</span> <span class="swiftkeyword">func</span> clickMultiply(sender: <span class="swiftclass">NSButton</span>) {</span></span>
+<span class="codeold"><span class="swiftcode">        display.stringValue += <span class="swiftstring">"*"</span></span></span>
+<span class="codeold"><span class="swiftcode">    }</span></span>
+<span class="codeold"><span class="swiftcode"></span></span>
+<span class="codeold"><span class="swiftcode">    <span class="swiftkeyword">@IBAction</span> <span class="swiftkeyword">func</span> clickDivide(sender: <span class="swiftclass">NSButton</span>) {</span></span>
+<span class="codeold"><span class="swiftcode">        display.stringValue += <span class="swiftstring">"/"</span></span></span>
+<span class="codeold"><span class="swiftcode">    }</span></span>
+<span class="codeold"><span class="swiftcode"></span></span>
+<span class="codeold"><span class="swiftcode">    <span class="swiftkeyword">@IBAction</span> <span class="swiftkeyword">func</span> clickClear(sender: <span class="swiftclass">NSButton</span>) {</span></span>
+<span class="codeold"><span class="swiftcode">        display.stringValue = <span class="swiftstring">""</span></span></span>
+<span class="codeold"><span class="swiftcode">    }</span></span>
+<span class="codeold"><span class="swiftcode"></span></span>
+<span class="swiftcode">    <span class="swiftkeyword">@IBAction</span> <span class="swiftkeyword">func</span> clickEquals(sender: <span class="swiftclass">NSButton</span>) {</span>
+<span class="swiftcode">        <span class="swiftkeyword">if</span> <span class="swiftkeyword">let</span> result = Parser&lt;Fraction&gt;.evaluate(display.stringValue) {</span>
+<span class="swiftcode">            display.stringValue += <span class="swiftstring">"=</span></span><span class="codeswift">\<span class="swiftstring">(</span>result<span class="swiftstring">)</span></span><span class="swiftcode"><span class="swiftstring">"</span></span>
+<span class="swiftcode">        } <span class="swiftkeyword">else</span> {</span>
+<span class="swiftcode">            display.stringValue = <span class="swiftstring">"Error"</span></span>
+<span class="swiftcode">        }</span>
+<span class="swiftcode">    }</span>
+<span class="codeold"><span class="swiftcode">    </span></span>
+<span class="codeold"><span class="swiftcode">}</span></span>
+</pre>
+</div>
+	
+	
+		<p>
+		Connect the new action to the "=" button.
+		</p>
+
+		<img class="block" src="images/screen22.png" style="max-width:1584px;max-height:807px" title="">
+	
+		<p>
+		Run and test the application.  Your output may differ, depending on your implementation of <span class="codeclass">Fraction</span> class, but the value of the result should be the same.
+		</p>
+		
+		<p>
+		This implementation has some weaknesses - the interface allows the user to create invalid expressions, which will evaluate to "Error".  Pressing the "=" button more than once will also create an "Error".  Try to think of possible changes to <em><span class="swiftcode"><span class="swiftdefined">AppDelegate</span></span></em> to improve usability.
+		</p> 		
+
+		<img class="block" src="images/screen23.png" style="max-width:285px;max-height:385px" title="">
+		
+	</div>
+
+
+	<div class="banner">
+		<a href="../../labs.php">COSC346 - Object Oriented Programming and User Interfaces</a>
+	</div>
+	</body>
+</html>
